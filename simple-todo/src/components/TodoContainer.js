@@ -3,27 +3,22 @@ import TodosList from "./TodoList";
 import Header from "./Header";
 import InputTodo from "./InputTodo";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 class TodoContainer extends React.Component {
   state = {
-    todos: [
-      {
-        id: 1,
-        title: "Setup development environment",
-        completed: true,
-      },
-      {
-        id: 2,
-        title: "Develop website and add content",
-        completed: false,
-      },
-      {
-        id: 3,
-        title: "Deploy to live server",
-        completed: false,
-      },
-    ],
+    todos: [],
   };
+
+  componentDidMount() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos", {
+        params: {
+          _limit: 10,
+        },
+      })
+      .then((response) => this.setState({ todos: response.data }));
+  }
 
   handleChange = (id) => {
     this.setState({
